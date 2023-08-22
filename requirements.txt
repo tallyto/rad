@@ -75,7 +75,7 @@ ssh-import-id==5.10
 systemd-python==234
 thinc==8.0.15
 tqdm==4.63.1
-Twisted==18.9.0
+Twisted==22.10.0
 typer==0.4.0
 typing-extensions==4.1.1
 ubuntu-advantage-tools==8001
