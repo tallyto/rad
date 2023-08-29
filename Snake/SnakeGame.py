@@ -144,7 +144,8 @@ class SnakeGame:
         self.canvas.create_oval(apple_x, apple_y, apple_x + 10, apple_y + 10, fill="red")
 
         # Desenhar a pontuação
-        self.canvas.create_text(PLAY_AREA_LEFT, PLAY_AREA_TOP, text=f"Score: {self.score}", anchor="nw")
+        score_text = f"Score: {self.score}"
+        self.canvas.create_text(PLAY_AREA_RIGHT, PLAY_AREA_BOTTOM, text=score_text, anchor="se")
 
 
 if __name__ == "__main__":
