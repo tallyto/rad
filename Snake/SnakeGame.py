@@ -12,7 +12,7 @@ class SnakeGame:
         self.canvas.pack()
 
         self.snake = Snake()
-
+        self.score = 0  # Inicializa a pontuação
         self.canvas.bind_all("<Key>", self.on_key_press)
         self.apple = (200, 100)  # Posição inicial da maçã
         self.play()
@@ -31,10 +31,11 @@ class SnakeGame:
 
     def play(self):
         self.snake.move()
-         # Verifique colisões
+
+        # Verifique colisões
         if self.is_collision(self.snake.positions[0], self.apple):
-            # A cobra comeu a maçã, então você precisa atualizar a posição da maçã
             self.apple = self.generate_new_apple_position()
+            self.score += 1  # Incrementa a pontuação
 
         # Atualize a tela
         self.update_canvas()
@@ -62,6 +63,10 @@ class SnakeGame:
         # Desenhe a maçã
         apple_x, apple_y = self.apple
         self.canvas.create_oval(apple_x, apple_y, apple_x + 10, apple_y + 10, fill="red")
+
+        # Desenhe a pontuação
+        self.canvas.create_text(10, 10, text=f"Score: {self.score}", anchor="nw")
+
 
 
 if __name__ == "__main__":
