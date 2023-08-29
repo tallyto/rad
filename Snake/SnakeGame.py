@@ -17,6 +17,7 @@ SNAKE_MOVE_INTERVAL = 100  # em milissegundos
 
 class SnakeGame:
     def __init__(self, window: tk.Tk):
+        self.game_over_label = None
         self.window = window
         self.window.title("Snake Game")
 
