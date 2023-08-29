@@ -149,5 +149,6 @@ class SnakeGame:
 
 if __name__ == "__main__":
     root = tk.Tk()
+    root.resizable(False, False)  # Impede o redimensionamento da janela
     game = SnakeGame(root)
     root.mainloop()
