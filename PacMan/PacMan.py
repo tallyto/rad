@@ -1,5 +1,5 @@
 import tkinter as tk
-
+import time
 
 class PacmanGame:
     def __init__(self, root):
@@ -8,7 +8,7 @@ class PacmanGame:
         self.root = root
         self.canvas = tk.Canvas(root)
         self.canvas.pack(fill=tk.BOTH, expand=True)
-
+        self.prev_time = time.time()
         # Matriz do labirinto
         self.labirinto = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -89,12 +89,21 @@ class PacmanGame:
         )
 
     def game_loop(self):
+
+        current_time = time.time()
+        time_elapsed = current_time - self.prev_time
+        self.prev_time = current_time
+
+        print(f"Tempo de execução da iteração: {time_elapsed:.4f} segundos")
+
         # Atualiza a lógica do jogo aqui
         self.mover_pacman_auto()
 
-        # Redesenha o Pac-Man e outras atualizações visuais
-        self.canvas.delete(self.pacman)
-        self.desenhar_pacman()
+        # Verifica se houve movimento do Pac-Man
+        if self.direcao_auto is not None:
+            # Redesenha o Pac-Man e outras atualizações visuais
+            self.canvas.delete(self.pacman)
+            self.desenhar_pacman()
 
         # Chama o loop principal novamente após um intervalo
         self.root.after(200, self.game_loop)
@@ -109,13 +118,25 @@ class PacmanGame:
         x, y = self.pacman_pos
 
         if key == "Up":
-            self.direcao_auto = "Up"
+            new_direction = "Up"
         elif key == "Down":
-            self.direcao_auto = "Down"
+            new_direction = "Down"
         elif key == "Left":
-            self.direcao_auto = "Left"
+            new_direction = "Left"
         elif key == "Right":
-            self.direcao_auto = "Right"
+            new_direction = "Right"
+        else:
+            new_direction = self.direcao_auto
+
+        # Verifica se a nova direção é possível
+        if new_direction == "Up" and y > 0 and self.labirinto[y - 1][x] == 0:
+            self.direcao_auto = new_direction
+        elif new_direction == "Down" and y < self.num_linhas - 1 and self.labirinto[y + 1][x] == 0:
+            self.direcao_auto = new_direction
+        elif new_direction == "Left" and x > 0 and self.labirinto[y][x - 1] == 0:
+            self.direcao_auto = new_direction
+        elif new_direction == "Right" and x < self.num_colunas - 1 and self.labirinto[y][x + 1] == 0:
+            self.direcao_auto = new_direction
 
         self.moving_key = False
 
@@ -133,6 +154,16 @@ class PacmanGame:
             y -= 1
         elif self.direcao_auto == "Down" and y < self.num_linhas - 1 and self.labirinto[y + 1][x] == 0:
             y += 1
+        else:
+            # Inverte a direção quando uma parede é encontrada
+            if self.direcao_auto == "Right":
+                self.direcao_auto = "Left"
+            elif self.direcao_auto == "Left":
+                self.direcao_auto = "Right"
+            elif self.direcao_auto == "Up":
+                self.direcao_auto = "Down"
+            elif self.direcao_auto == "Down":
+                self.direcao_auto = "Up"
 
         # Atualiza a posição do Pac-Man
         self.pacman_pos = (x, y)
