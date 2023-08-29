@@ -4,6 +4,16 @@ import random
 # Importar a classe Snake do módulo Snake
 from Snake import Snake
 
+# Constantes
+CANVAS_WIDTH = 400
+CANVAS_HEIGHT = 400
+PLAY_AREA_PADDING = 10
+PLAY_AREA_LEFT = PLAY_AREA_PADDING
+PLAY_AREA_TOP = PLAY_AREA_PADDING
+PLAY_AREA_RIGHT = CANVAS_WIDTH - PLAY_AREA_PADDING
+PLAY_AREA_BOTTOM = CANVAS_HEIGHT - PLAY_AREA_PADDING
+SNAKE_MOVE_INTERVAL = 100  # em milissegundos
+
 
 class SnakeGame:
     def __init__(self, window: tk.Tk):
@@ -11,7 +21,7 @@ class SnakeGame:
         self.window.title("Snake Game")
 
         # Configurar o canvas
-        self.canvas = tk.Canvas(window, width=400, height=400)
+        self.canvas = tk.Canvas(window, width=CANVAS_WIDTH, height=CANVAS_HEIGHT)
         self.canvas.pack()
 
         # Inicializar a cobra, pontuação e status do jogo
@@ -21,7 +31,7 @@ class SnakeGame:
 
         # Configurar frame para o botão "Play Again"
         self.frame_bottom = tk.Frame(window)
-        self.frame_bottom.pack(side="bottom", pady=20)
+        self.frame_bottom.pack(side="bottom", pady=PLAY_AREA_PADDING)
 
         # Configurar botão "Play Again" no canto inferior esquerdo
         self.play_again_button = tk.Button(self.frame_bottom, text="Play Again", command=self.restart_game)
@@ -32,7 +42,7 @@ class SnakeGame:
         self.canvas.bind_all("<Key>", self.on_key_press)
 
         # Definir limites da área jogável
-        self.play_area = (10, 10, 390, 390)  # (left, top, right, bottom)
+        self.play_area = (PLAY_AREA_LEFT, PLAY_AREA_TOP, PLAY_AREA_RIGHT, PLAY_AREA_BOTTOM)
 
         # Posição inicial da maçã
         self.apple = self.generate_new_apple_position()
@@ -65,8 +75,10 @@ class SnakeGame:
         self.snake.move()
 
         # Verificar colisão com a parede
-        if self.snake.positions[0][0] < 0 or self.snake.positions[0][0] >= 400 or \
-                self.snake.positions[0][1] < 0 or self.snake.positions[0][1] >= 400:
+        if (self.snake.positions[0][0] < self.play_area[0] or
+                self.snake.positions[0][0] >= self.play_area[2] or
+                self.snake.positions[0][1] < self.play_area[1] or
+                self.snake.positions[0][1] >= self.play_area[3]):
             self.game_over = True
 
         # Verificar colisão com a maçã e atualizar a pontuação
@@ -79,7 +91,7 @@ class SnakeGame:
 
         # Agendar a próxima iteração do jogo
         if not self.game_over:
-            self.window.after(100, self.play)
+            self.window.after(SNAKE_MOVE_INTERVAL, self.play)
         else:
             self.show_game_over_message()
 
@@ -132,7 +144,7 @@ class SnakeGame:
         self.canvas.create_oval(apple_x, apple_y, apple_x + 10, apple_y + 10, fill="red")
 
         # Desenhar a pontuação
-        self.canvas.create_text(10, 10, text=f"Score: {self.score}", anchor="nw")
+        self.canvas.create_text(PLAY_AREA_LEFT, PLAY_AREA_TOP, text=f"Score: {self.score}", anchor="nw")
 
 
 if __name__ == "__main__":
