@@ -13,6 +13,7 @@ class SnakeGame:
 
         self.snake = Snake()
         self.score = 0  # Inicializa a pontuação
+        self.game_over = False  # Inicializa o status de game over
         self.canvas.bind_all("<Key>", self.on_key_press)
         self.apple = (200, 100)  # Posição inicial da maçã
         self.play()
@@ -27,20 +28,32 @@ class SnakeGame:
             self.snake.direction = "Up"
         elif key == "Down" and self.snake.direction != "Up":
             self.snake.direction = "Down"
-        # Adicione outras condições de teclas aqui
+        # TODO: adicionar outras teclas para movimentar a cobra ex: [w = 'up', s = 'down', a = 'left', d = 'right']
 
     def play(self):
         self.snake.move()
 
-        # Verifique colisões
-        if self.is_collision(self.snake.positions[0], self.apple):
+        # Verifique se a cobra encostou na parede
+        if self.snake.positions[0][0] < 0 or self.snake.positions[0][0] >= 400 or \
+        self.snake.positions[0][1] < 0 or self.snake.positions[0][1] >= 400:
+            self.game_over = True
+
+        # Verifique colisões se o jogo não estiver terminado
+        if not self.game_over and self.is_collision(self.snake.positions[0], self.apple):
             self.apple = self.generate_new_apple_position()
-            self.score += 1  # Incrementa a pontuação
+            self.score += 1
 
         # Atualize a tela
         self.update_canvas()
 
-        self.window.after(100, self.play)
+        if not self.game_over:
+            self.window.after(100, self.play)
+        else:
+            self.show_game_over_message()
+
+    def show_game_over_message(self):
+        self.canvas.create_text(200, 200, text="Game Over", font=("Helvetica", 24), fill="red")
+
 
     def is_collision(self, position1, position2):
         # Verifique se duas posições colidem (por exemplo, cobra e maçã)
