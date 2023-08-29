@@ -57,7 +57,8 @@ class PacmanGame:
 
         # Inicia o movimento automático
         self.direcao_auto = "Right"
-        self.root.after(200, self.game_loop)
+        self.iteration_count = 0  # Contador de iterações para controle de movimento do fantasma
+        self.root.after(300, self.game_loop)  # Intervalo aumentado para 300 milissegundos
 
     def desenhar_labirinto(self):
         canvas_width = self.num_colunas * self.cell_size
@@ -95,7 +96,6 @@ class PacmanGame:
         )
 
     def game_loop(self):
-
         current_time = time.time()
         time_elapsed = current_time - self.prev_time
         self.prev_time = current_time
@@ -104,16 +104,39 @@ class PacmanGame:
 
         # Atualiza a lógica do jogo aqui
         self.mover_pacman_auto()
-        # Atualiza a posição do fantasma
-        self.ghost.move()
-        # Verifica se houve movimento do Pac-Man
-        if self.direcao_auto is not None:
-            # Redesenha o Pac-Man e outras atualizações visuais
-            self.canvas.delete(self.pacman)
-            self.desenhar_pacman()
 
-        # Chama o loop principal novamente após um intervalo
-        self.root.after(200, self.game_loop)
+        # Verifica colisão com fantasmas
+        if self.check_collision_with_ghost():
+            self.show_game_over()
+
+        # Redesenha o Pac-Man e outras atualizações visuais
+        self.canvas.delete(self.pacman)
+        self.desenhar_pacman()
+
+        # Atualiza a posição do fantasma a cada 2 iterações
+        if self.iteration_count % 2 == 0:
+            self.ghost.move()
+
+        self.iteration_count += 1
+
+        # Chama o loop principal novamente após o intervalo
+        self.root.after(500, self.game_loop)  # Intervalo aumentado para 500 milissegundos
+
+    def check_collision_with_ghost(self):
+        pac_x, pac_y = self.pacman_pos
+        ghost_x, ghost_y = self.ghost.x, self.ghost.y
+
+        return pac_x == ghost_x and pac_y == ghost_y
+
+    def show_game_over(self):
+        self.canvas.delete("all")  # Limpa a tela
+        self.canvas.create_text(
+            self.canvas.winfo_width() // 2,
+            self.canvas.winfo_height() // 2,
+            text="Game Over",
+            font=("Helvetica", 36),
+            fill="red"
+        )
 
     def on_key_press(self, event):
         if self.moving_key:
