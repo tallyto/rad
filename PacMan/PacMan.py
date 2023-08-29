@@ -48,11 +48,10 @@ class PacmanGame:
 
         # Posição inicial do Pac-Man
         self.pacman_pos = (1, 1)
-        self.desenhar_pacman()
 
         # Inicia o movimento automático
         self.direcao_auto = "Right"
-        self.root.after(300, self.mover_pacman_auto)
+        self.root.after(200, self.game_loop)
 
     def desenhar_labirinto(self):
         canvas_width = self.num_colunas * self.cell_size
@@ -88,6 +87,17 @@ class PacmanGame:
             x0, y0, x1, y1,
             fill="yellow"
         )
+
+    def game_loop(self):
+        # Atualiza a lógica do jogo aqui
+        self.mover_pacman_auto()
+
+        # Redesenha o Pac-Man e outras atualizações visuais
+        self.canvas.delete(self.pacman)
+        self.desenhar_pacman()
+
+        # Chama o loop principal novamente após um intervalo
+        self.root.after(200, self.game_loop)
 
     def on_key_press(self, event):
         if self.moving_key:
@@ -126,13 +136,6 @@ class PacmanGame:
 
         # Atualiza a posição do Pac-Man
         self.pacman_pos = (x, y)
-
-        # Redesenha o Pac-Man no novo local
-        self.canvas.delete(self.pacman)
-        self.desenhar_pacman()
-
-        # Configura a próxima chamada para mover o Pac-Man
-        self.root.after(300, self.mover_pacman_auto)
 
     def alterar_direcao(self):
         if self.direcao == "Right":
