@@ -1,7 +1,3 @@
-import tkinter as tk
-import random
-import time
-
 class Snake:
     def __init__(self):
         self.positions = [(100, 50), (90, 50), (80, 50)]

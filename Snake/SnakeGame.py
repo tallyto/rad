@@ -1,10 +1,11 @@
+import tkinter
 import tkinter as tk
 import random
-import time
 from Snake import Snake
 
+
 class SnakeGame:
-    def __init__(self, window):
+    def __init__(self, window: tkinter.Tk):
         self.window = window
         self.window.title("Snake Game")
 
@@ -35,7 +36,7 @@ class SnakeGame:
 
         # Verifique se a cobra encostou na parede
         if self.snake.positions[0][0] < 0 or self.snake.positions[0][0] >= 400 or \
-        self.snake.positions[0][1] < 0 or self.snake.positions[0][1] >= 400:
+                self.snake.positions[0][1] < 0 or self.snake.positions[0][1] >= 400:
             self.game_over = True
 
         # Verifique colisões se o jogo não estiver terminado
@@ -54,17 +55,16 @@ class SnakeGame:
     def show_game_over_message(self):
         self.canvas.create_text(200, 200, text="Game Over", font=("Helvetica", 24), fill="red")
 
-
     def is_collision(self, position1, position2):
         # Verifique se duas posições colidem (por exemplo, cobra e maçã)
         return position1 == position2
-    
+
     def generate_new_apple_position(self):
         # Gere uma nova posição aleatória para a maçã
         new_apple_x = random.randint(0, 39) * 10
         new_apple_y = random.randint(0, 39) * 10
         return new_apple_x, new_apple_y
-    
+
     def update_canvas(self):
         self.canvas.delete("all")  # Limpe a tela
 
@@ -79,7 +79,6 @@ class SnakeGame:
 
         # Desenhe a pontuação
         self.canvas.create_text(10, 10, text=f"Score: {self.score}", anchor="nw")
-
 
 
 if __name__ == "__main__":
