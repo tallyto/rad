@@ -31,8 +31,11 @@ class SnakeGame:
         # Vincular evento de tecla ao método de pressionar tecla
         self.canvas.bind_all("<Key>", self.on_key_press)
 
+        # Definir limites da área jogável
+        self.play_area = (10, 10, 390, 390)  # (left, top, right, bottom)
+
         # Posição inicial da maçã
-        self.apple = (200, 100)
+        self.apple = self.generate_new_apple_position()
 
         # Iniciar o jogo
         self.play()
@@ -104,18 +107,24 @@ class SnakeGame:
         return position1 == position2
 
     def generate_new_apple_position(self):
-        # Gerar nova posição aleatória para a maçã
-        new_apple_x = random.randint(0, 39) * 10
-        new_apple_y = random.randint(0, 39) * 10
+        # Gere uma nova posição aleatória para a maçã, dentro da área jogável
+        new_apple_x = random.randint(self.play_area[0] // 10, self.play_area[2] // 10 - 1) * 10
+        new_apple_y = random.randint(self.play_area[1] // 10, self.play_area[3] // 10 - 1) * 10
         return new_apple_x, new_apple_y
 
     def update_canvas(self):
         # Limpar o canvas
         self.canvas.delete("all")
 
+        # Desenhar paredes internas
+        self.canvas.create_rectangle(self.play_area, outline="gray")
+
         # Desenhar a cobra
         for segment in self.snake.positions:
             x, y = segment
+            # Certifique-se de que a cobra permaneça dentro da área jogável
+            x = max(self.play_area[0], min(x, self.play_area[2] - 10))
+            y = max(self.play_area[1], min(y, self.play_area[3] - 10))
             self.canvas.create_rectangle(x, y, x + 10, y + 10, fill="green")
 
         # Desenhar a maçã
