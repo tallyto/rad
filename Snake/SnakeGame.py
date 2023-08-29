@@ -1,25 +1,35 @@
-import tkinter
 import tkinter as tk
 import random
+
+# Importar a classe Snake do módulo Snake
 from Snake import Snake
 
 
 class SnakeGame:
-    def __init__(self, window: tkinter.Tk):
+    def __init__(self, window: tk.Tk):
         self.window = window
         self.window.title("Snake Game")
 
+        # Configurar o canvas
         self.canvas = tk.Canvas(window, width=400, height=400)
         self.canvas.pack()
 
+        # Inicializar a cobra, pontuação e status do jogo
         self.snake = Snake()
-        self.score = 0  # Inicializa a pontuação
-        self.game_over = False  # Inicializa o status de game over
+        self.score = 0
+        self.game_over = False
+
+        # Vincular evento de tecla ao método de pressionar tecla
         self.canvas.bind_all("<Key>", self.on_key_press)
-        self.apple = (200, 100)  # Posição inicial da maçã
+
+        # Posição inicial da maçã
+        self.apple = (200, 100)
+
+        # Iniciar o jogo
         self.play()
 
     def on_key_press(self, e):
+        # Atualizar a direção da cobra com base na tecla pressionada
         key = e.keysym
         if key == "Right" and self.snake.direction != "Left":
             self.snake.direction = "Right"
@@ -29,55 +39,66 @@ class SnakeGame:
             self.snake.direction = "Up"
         elif key == "Down" and self.snake.direction != "Up":
             self.snake.direction = "Down"
-        # TODO: adicionar outras teclas para movimentar a cobra ex: [w = 'up', s = 'down', a = 'left', d = 'right']
+        elif key in ["d", "D"] and self.snake.direction != "Left":
+            self.snake.direction = "Right"
+        elif key in ["a", "A"] and self.snake.direction != "Right":
+            self.snake.direction = "Left"
+        elif key in ["w", "W"] and self.snake.direction != "Down":
+            self.snake.direction = "Up"
+        elif key in ["s", "S"] and self.snake.direction != "Up":
+            self.snake.direction = "Down"
 
     def play(self):
+        # Movimentar a cobra
         self.snake.move()
 
-        # Verifique se a cobra encostou na parede
+        # Verificar colisão com a parede
         if self.snake.positions[0][0] < 0 or self.snake.positions[0][0] >= 400 or \
                 self.snake.positions[0][1] < 0 or self.snake.positions[0][1] >= 400:
             self.game_over = True
 
-        # Verifique colisões se o jogo não estiver terminado
+        # Verificar colisão com a maçã e atualizar a pontuação
         if not self.game_over and self.is_collision(self.snake.positions[0], self.apple):
             self.apple = self.generate_new_apple_position()
             self.score += 1
 
-        # Atualize a tela
+        # Atualizar o canvas
         self.update_canvas()
 
+        # Agendar a próxima iteração do jogo
         if not self.game_over:
             self.window.after(100, self.play)
         else:
             self.show_game_over_message()
 
     def show_game_over_message(self):
+        # Mostrar mensagem de fim de jogo
         self.canvas.create_text(200, 200, text="Game Over", font=("Helvetica", 24), fill="red")
 
     def is_collision(self, position1, position2):
-        # Verifique se duas posições colidem (por exemplo, cobra e maçã)
+        # Verificar se duas posições colidem
         return position1 == position2
 
     def generate_new_apple_position(self):
-        # Gere uma nova posição aleatória para a maçã
+        # Gerar nova posição aleatória para a maçã
         new_apple_x = random.randint(0, 39) * 10
         new_apple_y = random.randint(0, 39) * 10
         return new_apple_x, new_apple_y
 
     def update_canvas(self):
-        self.canvas.delete("all")  # Limpe a tela
+        # Limpar o canvas
+        self.canvas.delete("all")
 
-        # Desenhe a cobra
+        # Desenhar a cobra
         for segment in self.snake.positions:
             x, y = segment
             self.canvas.create_rectangle(x, y, x + 10, y + 10, fill="green")
 
-        # Desenhe a maçã
+        # Desenhar a maçã
         apple_x, apple_y = self.apple
         self.canvas.create_oval(apple_x, apple_y, apple_x + 10, apple_y + 10, fill="red")
 
-        # Desenhe a pontuação
+        # Desenhar a pontuação
         self.canvas.create_text(10, 10, text=f"Score: {self.score}", anchor="nw")
 
 
