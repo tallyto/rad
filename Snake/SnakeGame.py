@@ -19,6 +19,15 @@ class SnakeGame:
         self.score = 0
         self.game_over = False
 
+        # Configurar frame para o botão "Play Again"
+        self.frame_bottom = tk.Frame(window)
+        self.frame_bottom.pack(side="bottom", pady=20)
+
+        # Configurar botão "Play Again" no canto inferior esquerdo
+        self.play_again_button = tk.Button(self.frame_bottom, text="Play Again", command=self.restart_game)
+        self.play_again_button.pack(side="left")
+        self.play_again_button.config(state="disabled")
+
         # Vincular evento de tecla ao método de pressionar tecla
         self.canvas.bind_all("<Key>", self.on_key_press)
 
@@ -72,8 +81,23 @@ class SnakeGame:
             self.show_game_over_message()
 
     def show_game_over_message(self):
-        # Mostrar mensagem de fim de jogo
-        self.canvas.create_text(200, 200, text="Game Over", font=("Helvetica", 24), fill="red")
+        # Exibir mensagem de fim de jogo no centro da tela
+        self.game_over_label = tk.Label(self.window, text="Game Over", font=("Helvetica", 24), fg="red")
+        self.game_over_label.place(relx=0.5, rely=0.5, anchor="center")
+
+        # Habilitar o botão "Play Again"
+        self.play_again_button.config(state="normal")
+
+    def restart_game(self):
+        # Reiniciar o jogo
+        self.snake = Snake()
+        self.score = 0
+        self.game_over = False
+        # Remover a mensagem de Game Over
+        self.game_over_label.destroy()
+        self.apple = self.generate_new_apple_position()
+        self.play_again_button.config(state="disabled")  # Desativar o botão novamente
+        self.play()  # Iniciar o jogo novamente
 
     def is_collision(self, position1, position2):
         # Verificar se duas posições colidem
