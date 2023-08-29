@@ -1,5 +1,7 @@
 import tkinter as tk
 import time
+from Ghost import Ghost
+
 
 class PacmanGame:
     def __init__(self, root):
@@ -48,6 +50,10 @@ class PacmanGame:
 
         # Posição inicial do Pac-Man
         self.pacman_pos = (1, 1)
+
+        # Posição inicial do fantasma
+        self.ghost_pos = (10, 10)
+        self.ghost = Ghost(self.canvas, *self.ghost_pos, labirinto=self.labirinto)
 
         # Inicia o movimento automático
         self.direcao_auto = "Right"
@@ -98,7 +104,8 @@ class PacmanGame:
 
         # Atualiza a lógica do jogo aqui
         self.mover_pacman_auto()
-
+        # Atualiza a posição do fantasma
+        self.ghost.move()
         # Verifica se houve movimento do Pac-Man
         if self.direcao_auto is not None:
             # Redesenha o Pac-Man e outras atualizações visuais
