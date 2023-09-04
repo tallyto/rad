@@ -25,7 +25,7 @@ Certifique-se de que você possui Python instalado em seu sistema.
 
 ## Captura de Tela
 
-![Captura de Tela do Jogo da Velha](screenshot.png)
+![Captura de Tela do Jogo da Velha](screenshot.PNG)
 
 ## Contribuição
 
