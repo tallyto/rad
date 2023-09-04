@@ -41,7 +41,7 @@ def on_click(row, col):
 
 # Cria a janela principal
 root = tk.Tk()
-root.geometry("550x550")
+root.geometry("550x550")  # Define o tamanho da janela
 root.title("Tic-Tac-Toe")
 
 # Cria o quadro principal
@@ -59,6 +59,7 @@ for i in range(3):
     row_buttons = []
     for j in range(3):
         button = tk.Button(main_frame, text="", border=1, relief="groove", padx=20, pady=20,
+                           width=10, height=3,  # Ajuste o tamanho dos botões aqui
                            command=lambda row=i, col=j: on_click(row, col))
         button.grid(row=i, column=j)
         row_buttons.append(button)
