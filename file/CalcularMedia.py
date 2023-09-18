@@ -1,15 +1,9 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
-class App (tk.Frame):
-    # Construtor da Sub Classe
-    def __init__ (self):
-        self.msg: tk.Label
-        self.botaoBuscar: tk.Button
-        self.msgResultado: tk.Label
-        self.botaoSair: tk.Button
-        # Construtor da Super Classe
+import csv
+class CalcularMedia(tk.Frame):
+    def __init__(self):
         tk.Frame.__init__(self)
-        print("Olá")
         self.desenharTela()
     
     def desenharTela(self):
@@ -33,6 +27,26 @@ class App (tk.Frame):
     def buscarArquivo(self):
         nomeArquivo = askopenfilename()
         self.msgResultado["text"] = f"Aberto: {nomeArquivo}"
+        self.lerArquivoCSV(nomeArquivo)
 
-obj = App()
+    def lerArquivoCSV(self, nomeArquivo):
+        with open(nomeArquivo, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+
+            next(reader)
+
+            for row in reader:
+                nome = row[0]
+                nota1 = float(row[1])
+                nota2 = float(row[2])
+                nota3 = float(row[3])
+
+                media = (nota1 + nota2 + nota3) / 3
+                mediaFormatada = "{:.2f}".format(media)
+                print(f"Nome: {nome} \nMedia: {mediaFormatada}")
+
+                resultado_label = tk.Label(self.master, text=f"Nome: {nome}\nMedia: {mediaFormatada}")
+                resultado_label.pack()
+
+obj = CalcularMedia()
 obj.mainloop()
