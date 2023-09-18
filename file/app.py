@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.filedialog import askopenfilename
 class App (tk.Frame):
     # Construtor da Sub Classe
     def __init__ (self):
@@ -30,6 +31,8 @@ class App (tk.Frame):
 
     def buscarArquivo(self):
         print("Olá, sou o Buscar Arquivo.")
+        nomeArquivo = askopenfilename()
+        print("Arquivo selecionado: ", nomeArquivo)
 
 obj = App()
 obj.mainloop()
