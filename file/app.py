@@ -9,6 +9,8 @@ class App (tk.Frame):
     
     def desenharTela(self):
         self.master.geometry("600x620")
+        self.msg = tk.Label(self.master, text= "Informat nome do Arquivo.")
+        self.msg.pack()
 
 obj = App()
 obj.mainloop()
