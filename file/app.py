@@ -20,13 +20,16 @@ class App (tk.Frame):
         self.butaoBuscar["text"] = "Clique buscar"
         self.butaoBuscar["font"] = ("Calibri", "12")
         self.butaoBuscar["width"] = 30
-        self.butaoBuscar["command"] = self.quit
+        self.butaoBuscar["command"] = self.buscarArquivo
         self.butaoBuscar.pack()
 
         self.msgResultado = tk.Label(self.master, text="Resultado após clicar.")
         
         self.botaoSair = tk.Button(self.master, text="Sair" , bg="red", fg="white", width="20", command= self.quit)
         self.botaoSair.pack()
+
+    def buscarArquivo(self):
+        print("Olá, sou o Buscar Arquivo.")
 
 obj = App()
 obj.mainloop()
