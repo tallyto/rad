@@ -25,6 +25,7 @@ class App (tk.Frame):
         self.butaoBuscar.pack()
 
         self.msgResultado = tk.Label(self.master, text="Resultado após clicar.")
+        self.msgResultado.pack()
         
         self.botaoSair = tk.Button(self.master, text="Sair" , bg="red", fg="white", width="20", command= self.quit)
         self.botaoSair.pack()
@@ -33,6 +34,7 @@ class App (tk.Frame):
         print("Olá, sou o Buscar Arquivo.")
         nomeArquivo = askopenfilename()
         print("Arquivo selecionado: ", nomeArquivo)
+        self.msgResultado["text"] = f"Aberto: {nomeArquivo}"
 
 obj = App()
 obj.mainloop()
