@@ -12,5 +12,12 @@ class App (tk.Frame):
         self.msg = tk.Label(self.master, text= "Informat nome do Arquivo.")
         self.msg.pack()
 
+        self.butaoBuscar = tk.Button(self.master)
+        self.butaoBuscar["text"] = "Clique buscar"
+        self.butaoBuscar["font"] = ("Calibri", "12")
+        self.butaoBuscar["width"] = 30
+        self.butaoBuscar["command"] = self.quit
+        self.butaoBuscar.pack()
+
 obj = App()
 obj.mainloop()
