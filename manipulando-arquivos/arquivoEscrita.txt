@@ -1,0 +1,2 @@
+Esta é a primeira linha do arquivoEscrita.txt
+Esta é a segunda linha do arquivoEscrita.txt

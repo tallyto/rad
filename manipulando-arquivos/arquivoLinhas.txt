@@ -1,0 +1,2 @@
+Esta é a terceira linha do arquivoEscrita.txt
+Esta é a quarta linha do arquivoEscrita.txt
