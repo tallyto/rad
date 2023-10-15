@@ -102,6 +102,11 @@ def editar_aluno(aluno_id):
     popup = tk.Toplevel()
     popup.title("Editar Aluno")
 
+    # Defina as dimensões e a posição do popup
+    popup.geometry("400x250")  # Ajuste o tamanho conforme necessário
+    popup.transient(root)
+    popup.grab_set()
+
     label_novo_nome = tk.Label(popup, text="Novo Nome:")
     entry_novo_nome = tk.Entry(popup)
     entry_novo_nome.insert(0, aluno[1])  # Preencha com o nome atual
