@@ -53,13 +53,13 @@ def listar_alunos():
     resultado_text.delete(1.0, tk.END)  # Limpa o texto anterior
 
     for aluno in alunos:
-        total = (aluno[2] + aluno[3] + aluno[4]) / 3
+        media = (aluno[2] + aluno[3] + aluno[4]) / 3
         resultado_text.insert(tk.END, f"ID: {aluno[0]}\n")
         resultado_text.insert(tk.END, f"Nome: {aluno[1]}\n")
         resultado_text.insert(tk.END, f"AV1: {aluno[2]}\n")
         resultado_text.insert(tk.END, f"AV2: {aluno[3]}\n")
         resultado_text.insert(tk.END, f"AV3: {aluno[4]}\n")
-        resultado_text.insert(tk.END, f"Total: {total:.2f}\n")
+        resultado_text.insert(tk.END, f"Média: {media:.2f}\n")
         resultado_text.insert(tk.END, f"Criado por: {aluno[5]}\n")
         resultado_text.insert(tk.END, "\n")
 
