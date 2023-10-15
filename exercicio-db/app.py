@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import mysql.connector
 
 
@@ -45,24 +46,37 @@ def adicionar_aluno():
     db.commit()
     listar_alunos()
 
+# Função para listar os alunos
 def listar_alunos():
     cursor.execute("SELECT * FROM aluno")
     alunos = cursor.fetchall()
     resultado_text.delete(1.0, tk.END)  # Limpa o texto anterior
 
     for aluno in alunos:
+        total = (aluno[2] + aluno[3] + aluno[4]) / 3
         resultado_text.insert(tk.END, f"ID: {aluno[0]}\n")
         resultado_text.insert(tk.END, f"Nome: {aluno[1]}\n")
         resultado_text.insert(tk.END, f"AV1: {aluno[2]}\n")
         resultado_text.insert(tk.END, f"AV2: {aluno[3]}\n")
         resultado_text.insert(tk.END, f"AV3: {aluno[4]}\n")
+        resultado_text.insert(tk.END, f"Total: {total:.2f}\n")
         resultado_text.insert(tk.END, f"Criado por: {aluno[5]}\n")
         resultado_text.insert(tk.END, "\n")
 
-        # Adicione um botão "Editar" para cada aluno
+        # Adicione botões "Editar" e "Remover" para cada aluno
         btn_editar = tk.Button(root, text="Editar", command=lambda aluno_id=aluno[0]: editar_aluno(aluno_id))
+        btn_remover = tk.Button(root, text="Remover", command=lambda aluno_id=aluno[0]: remover_aluno(aluno_id))
         resultado_text.window_create(tk.END, window=btn_editar)
+        resultado_text.window_create(tk.END, window=btn_remover)
         resultado_text.insert(tk.END, "\n")
+
+# Função para remover um aluno
+def remover_aluno(aluno_id):
+    # Confirmação de remoção
+    if messagebox.askyesno("Confirmação", "Tem certeza de que deseja remover este aluno?"):
+        cursor.execute("DELETE FROM aluno WHERE id = %s", (aluno_id,))
+        db.commit()
+        listar_alunos()
 
 # Função para editar um aluno
 def editar_aluno(aluno_id):
