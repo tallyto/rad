@@ -1,0 +1,9 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest  # Use a imagem mais recente do MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234567890  # Defina sua senha do MySQL
+      MYSQL_DATABASE: rad
+    ports:
+      - "3306:3306"
