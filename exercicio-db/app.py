@@ -45,7 +45,6 @@ def adicionar_aluno():
     db.commit()
     listar_alunos()
 
-# Função para listar os alunos
 def listar_alunos():
     cursor.execute("SELECT * FROM aluno")
     alunos = cursor.fetchall()
@@ -59,6 +58,60 @@ def listar_alunos():
         resultado_text.insert(tk.END, f"AV3: {aluno[4]}\n")
         resultado_text.insert(tk.END, f"Criado por: {aluno[5]}\n")
         resultado_text.insert(tk.END, "\n")
+
+        # Adicione um botão "Editar" para cada aluno
+        btn_editar = tk.Button(root, text="Editar", command=lambda aluno_id=aluno[0]: editar_aluno(aluno_id))
+        resultado_text.window_create(tk.END, window=btn_editar)
+        resultado_text.insert(tk.END, "\n")
+
+# Função para editar um aluno
+def editar_aluno(aluno_id):
+    # Função para salvar as alterações no aluno
+    def salvar_alteracoes():
+        novo_nome = entry_novo_nome.get()
+        nova_av1 = entry_nova_av1.get()
+        nova_av2 = entry_nova_av2.get()
+        nova_av3 = entry_nova_av3.get()
+        cursor.execute("UPDATE aluno SET nome = %s, av1 = %s, av2 = %s, av3 = %s WHERE id = %s", (novo_nome, nova_av1, nova_av2, nova_av3, aluno_id))
+        db.commit()
+        listar_alunos()
+        popup.destroy()
+
+    # Obtenha o ID do aluno selecionado (passado como argumento)
+    aluno_id = aluno_id
+
+    # Consulte o aluno pelo ID
+    cursor.execute("SELECT * FROM aluno WHERE id = %s", (aluno_id,))
+    aluno = cursor.fetchone()
+
+    # Criação da janela popup para edição
+    popup = tk.Toplevel()
+    popup.title("Editar Aluno")
+
+    label_novo_nome = tk.Label(popup, text="Novo Nome:")
+    entry_novo_nome = tk.Entry(popup)
+    entry_novo_nome.insert(0, aluno[1])  # Preencha com o nome atual
+    label_nova_av1 = tk.Label(popup, text="Nova AV1:")
+    entry_nova_av1 = tk.Entry(popup)
+    entry_nova_av1.insert(0, str(aluno[2]))  # Preencha com a AV1 atual
+    label_nova_av2 = tk.Label(popup, text="Nova AV2:")
+    entry_nova_av2 = tk.Entry(popup)
+    entry_nova_av2.insert(0, str(aluno[3]))  # Preencha com a AV2 atual
+    label_nova_av3 = tk.Label(popup, text="Nova AV3:")
+    entry_nova_av3 = tk.Entry(popup)
+    entry_nova_av3.insert(0, str(aluno[4]))  # Preencha com a AV3 atual
+    btn_salvar = tk.Button(popup, text="Salvar Alterações", command=salvar_alteracoes)
+
+    label_novo_nome.pack()
+    entry_novo_nome.pack()
+    label_nova_av1.pack()
+    entry_nova_av1.pack()
+    label_nova_av2.pack()
+    entry_nova_av2.pack()
+    label_nova_av3.pack()
+    entry_nova_av3.pack()
+    btn_salvar.pack()
+
 
 
 # Configuração da janela principal
