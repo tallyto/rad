@@ -8,7 +8,7 @@ cursor.execute("USE rad;")
 
 def criaTabela():
     try:
-        createTable = 'CREATE TABLE TABLE IF NOT EXISTS minha_cidade (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, nome_cidade VARCHAR(50), estado VARCHAR(2));'
+        createTable = 'CREATE TABLE IF NOT EXISTS minha_cidade (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, nome_cidade VARCHAR(50), estado VARCHAR(2));'
         cursor.execute(createTable)
         cnx.commit()
         print("Tabela criada com sucesso.")
